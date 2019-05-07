@@ -6,7 +6,7 @@ global carryOn, titleOn, Ptext, Ttext, HTPtext, Ctext, timeout, FUEL, ship_type,
 SONG_END = pygame.USEREVENT + 1
 pygame.mixer.music.set_endevent(SONG_END)
 
-pygame.mixer.pre_init(44100, 16, 20, 0) #frequency, size, channels, buffersize
+pygame.mixer.pre_init(50000, 16, 20, 0) #frequency, size, channels, buffersize
 pygame.init()
 
 #Colors  ( R )( G )( B )
@@ -42,6 +42,10 @@ HEALTH = 100
 HEALTH_GAIN = 0
 ship_type = 1
 accesory_type = 0
+A1_Hit_Time = 0
+A2_Hit_Time = 0
+A3_Hit_Time = 0
+A4_Hit_Time = 0
 PU_type = random.randrange(1,4)
 background_picker = random.randrange(1,52)
 mousexy = (0, 0)
@@ -131,7 +135,8 @@ Bubble = pygame.image.load('Bubble.png')
 Health = pygame.image.load('health.jpg')
 Health_Bar = pygame.image.load('health bar.png')
 Fuel = pygame.image.load('fuel.jpg')
-Hitmarker = pygame.image.load('health bar.png')
+Hitmarker = pygame.image.load('HITMARKER.png')
+Broken_Asteroid = pygame.image.load('asteroid (broken).png')
 
 ## GUIs
 Title_Gui = pygame.image.load('TITLE GUI.png')
@@ -581,6 +586,7 @@ def Title_screen():
 
     for beam in rect_beams:
         rect_beams.remove(beam)
+    beams.clear()
 
     for flame in rect_flames:
         rect_flames.remove(flame)
@@ -1099,6 +1105,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
+                    A1_Hit_Time = 3
             elif doRectsOverlap(A2['rect'], beam):
                 beams.remove(beam)
                 if A2['rect'][1] >= -50 and Rem2_rect == False and Rem2_image == False:
@@ -1110,6 +1117,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
+                    A2_Hit_Time = 3
             elif doRectsOverlap(A3['rect'], beam):
                 beams.remove(beam)
                 if A3['rect'][1] >= -50 and Rem3_rect == False and Rem3_image == False:
@@ -1121,6 +1129,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
+                    A3_Hit_Time = 3
             elif doRectsOverlap(A4['rect'], beam):
                 beams.remove(beam)
                 if A4['rect'][1] >= -50 and Rem4_rect == False and Rem4_image == False:
@@ -1132,8 +1141,39 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
-    ##        elif doRectsOverlap(Ship_sensor['rect'], beam):
-    ##            beams.remove(beam)
+                    A4_Hit_Time = 3
+
+        if A1_Hit_Time >= 1:
+            if accesory_type == 1:
+                A1_Hit_Time -= 1
+                screen.blit(Hitmarker, ((A1['rect'][0] - 6), (A1['rect'][1] - 4)))
+            else:
+                A1_Hit_Time -= .3
+                screen.blit(Broken_Asteroid, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+
+        if A2_Hit_Time >= 1:
+            if accesory_type == 1:
+                A2_Hit_Time -= 1
+                screen.blit(Hitmarker, ((A2['rect'][0] - 6), (A2['rect'][1] - 4)))
+            else:
+                A2_Hit_Time -= .3
+                screen.blit(Broken_Asteroid, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+
+        if A3_Hit_Time >= 1:
+            if accesory_type == 1:
+                A3_Hit_Time -= 1
+                screen.blit(Hitmarker, ((A3['rect'][0] - 6), (A3['rect'][1] - 4)))
+            else:
+                A3_Hit_Time -= .3
+                screen.blit(Broken_Asteroid, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+
+        if A4_Hit_Time >= 1:
+            if accesory_type == 1:
+                A4_Hit_Time -= 1
+                screen.blit(Hitmarker, ((A4['rect'][0] - 6), (A4['rect'][1] - 4)))
+            else:
+                A4_Hit_Time -= .3
+                screen.blit(Broken_Asteroid, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
 
         # Asteroid collision
         if doRectsOverlap(A1["rect"], Ship_sensor["rect"]):
@@ -1284,8 +1324,8 @@ while everyOn:
             speed_points -= 0.01
 
         # Game Logic
-        for car in all_coming_cars:
-            car.moveForward(traffic_speedy)
+        for entity in all_coming_cars:
+            entity.moveForward(traffic_speedy)
 
         for beam in rect_beams:
             if beam.rect.y <= -301:
