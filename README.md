@@ -3,7 +3,8 @@ This is a space game I made for school originally called Star Battles, with the 
 The goal of the game is to get as many points as possible before the time runs out. Any score 0 or below is considered a loss, 
 and a score above that counts as a win. Right now the time limit is short for show, but in the final version it will be extended.
 
-*UPDATE*
+*UPDATE*:
+
 So, what I have added since the last time is that I have made a much more advanced GUI. The game generally looks much better, 
 especially the title screen. I have changed the image for the ship, and I already have the rest done. Those should be included 
 in the pack already. I added a limit to the rate of fire, the better the shot, the longer the wait. I balanced the game to the best of my 
@@ -14,7 +15,8 @@ Also, I removed the fortnite galaxy skin from the game...
 Also, there is a power up indicator, with an icon! I'm just very proud of that okay? Also, the time counts down in seconds now instead of frames. 
 Please let me know if I left anything crucial out of the zip file.
 
-*UPDATE*
+*UPDATE*:
+
 I believe I the biggest change is the GUI. I have made a sort of theme with the GUI and I have even added a health bar and Fuel bar. 
 I have also reduced lag significantly, even bigger fix coming soon. I have added a button to reset high scores if you want to, 
 just keep in mind it will be an admin privilege later. I have made every ship sprite, but I haven't added them all. I have, however, 
@@ -52,18 +54,15 @@ and people don't have too much time to play, so somebody could just be in and ou
 beat their high score. Believe me, no detail in this game came accidentally, every thing has a purpose, and I have worked 
 in much detail to make it that way. I hope you will like the feel of the finished game.
 
-*UPDATE*
-I ADDED A SHIP CHANGING SCREEN! Now the player can customise their ship at any time while playing the game. I was even able to make 
-one of the ships unlockable. The ships don't do anything special as of yet, so they are purely cosmetic, but, later on, they should have
-unique properties and abilities. The special ship is a secret, you will just have to get 7500 points to see it, better yet, what it does when
-I add that functionality, which shouldn't take all of too long. In the final commit (v.1) I will probably have the player start with 
-one ship, if I have time, and work their way up. Speeking of points, the player now gets 200 points instead of 100 every asteroid hit. 
-Also mentioning points, random people can no longer reset the scores, they must input a special code.
+*UPDATE*:
 
-In the end I was able to sneek in a few easter eggs, not quite as I imagined, but not bad. Oh yeah! speeking of which, I have added 
-accesories to the game, these are and are planned to continue being purely cosmetic. For example, the MLG glasses turn big lasers into 
-doritos. The one thing I have had the biggest trouble with overall is fixing the lag, Just now before writing this, I was able to add 
+I ADDED A SHIP CHANGING SCREEN! Now the player can customize their ship at any time while playing the game. I was even able to make 
+one of the ships unlock-able. The ships don't do anything special as of yet, so they are purely cosmetic, but, later on, they should have unique properties and abilities. The special ship is a secret, you will just have to get 7500 points to see it, better yet, what it does when I add that functionality, which shouldn't take all of too long. In the final commit (v.1) I will probably have the player start with one ship, if I have time, and work their way up. Speaking of points, the player now gets 200 points instead of 100 every asteroid hit. Also mentioning points, random people can no longer reset the scores, they must input a special code.
+
+In the end I was able to sneak in a few easter eggs, not quite as I imagined, but not bad. Oh yeah! speaking of which, I have added 
+accessories to the game, these are and are planned to continue being purely cosmetic. For example, the MLG glasses turn big lasers into 
+Doritos. The one thing I have had the biggest trouble with overall is fixing the lag, Just now before writing this, I was able to add 
 what I think was a complete lag fix. I can't be totally sure, though, my computer has never really shown it in the first place. I will 
-just have to see how it runs on sombody elses. I say I think for the fix because, the lag has noticeably dissapeared from what I can 
+just have to see how it runs on somebody else's. I say I think for the fix because, the lag has noticeably disappeared from what I can 
 tell, however, I have not been able to run sufficient tests, so it is possible that there are a few new appearing bugs that I will 
 need to double check, I have patched the ones I could see right off the bat, but I'm not sure how well. Only time will tell.
