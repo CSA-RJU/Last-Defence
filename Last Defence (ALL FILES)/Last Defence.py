@@ -1,3 +1,39 @@
+##                 END OF TERMS AND CONDITIONS
+##
+##        How to Apply These Terms to Your New Programs
+##If you develop a new program, and you want it to be of the greatest possible use to the public, the best way to achieve this is to make it free software which everyone can redistribute and change under these terms.
+##
+##To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the "copyright" line and a pointer to where the full notice is found.
+##
+##{one line to give the program's name and a brief idea of what it does.}
+##Copyright (C) 2018  {name of author}
+##
+##This program is free software: you can redistribute it and/or modify
+##it under the terms of the GNU General Public License as published by
+##the Free Software Foundation, either version 3 of the License, or
+##(at your option) any later version.
+##
+##This program is distributed in the hope that it will be useful,
+##but WITHOUT ANY WARRANTY; without even the implied warranty of
+##MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##GNU General Public License for more details.
+##
+##You should have received a copy of the GNU General Public License
+##along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##Also add information on how to contact you by electronic and paper mail.
+##
+##If the program does terminal interaction, make it output a short notice like this when it starts in an interactive mode:
+##
+##MC-Originals  Copyright (C) 2018  CSA-RJU
+##This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+##This is free software, and you are welcome to redistribute it
+##under certain conditions; type `show c' for details.
+##The hypothetical commands show w' and show c' should show the appropriate parts of the General Public License. Of course, your program's commands might be different; for a GUI interface, you would use an "about box".
+##
+##You should also get your employer (if you work as a programmer) or school, if any, to sign a "copyright disclaimer" for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see http://www.gnu.org/licenses/.
+##
+##The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read http://www.gnu.org/philosophy/why-not-lgpl.html.
+
 import pygame, random, os
 from sprite_maker import Ship, Asteroid, Star, Beam, Big_Beam, Torpidorito, LilFlame, Flame
 
@@ -137,6 +173,7 @@ Health_Bar = pygame.image.load('health bar.png')
 Fuel = pygame.image.load('fuel.jpg')
 Hitmarker = pygame.image.load('HITMARKER.png')
 Broken_Asteroid = pygame.image.load('asteroid (broken).png')
+Broken_Asteroid_2 = pygame.image.load('asteroid (broken)2.png')
 
 ## GUIs
 Title_Gui = pygame.image.load('TITLE GUI.png')
@@ -1105,7 +1142,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
-                    A1_Hit_Time = 3
+                    A1_Hit_Time = 6
             elif doRectsOverlap(A2['rect'], beam):
                 beams.remove(beam)
                 if A2['rect'][1] >= -50 and Rem2_rect == False and Rem2_image == False:
@@ -1117,7 +1154,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
-                    A2_Hit_Time = 3
+                    A2_Hit_Time = 6
             elif doRectsOverlap(A3['rect'], beam):
                 beams.remove(beam)
                 if A3['rect'][1] >= -50 and Rem3_rect == False and Rem3_image == False:
@@ -1129,7 +1166,7 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
-                    A3_Hit_Time = 3
+                    A3_Hit_Time = 6
             elif doRectsOverlap(A4['rect'], beam):
                 beams.remove(beam)
                 if A4['rect'][1] >= -50 and Rem4_rect == False and Rem4_image == False:
@@ -1141,39 +1178,51 @@ while everyOn:
                             Hit_marker.play()
                         else:
                             Crunch.play()
-                    A4_Hit_Time = 3
+                    A4_Hit_Time = 6
 
         if A1_Hit_Time >= 1:
             if accesory_type == 1:
-                A1_Hit_Time -= 1
+                A1_Hit_Time -= 2
                 screen.blit(Hitmarker, ((A1['rect'][0] - 6), (A1['rect'][1] - 4)))
             else:
-                A1_Hit_Time -= .3
-                screen.blit(Broken_Asteroid, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+                A1_Hit_Time -= .6
+                if A1_Hit_Time > 2.5:
+                    screen.blit(Broken_Asteroid, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_2, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
 
         if A2_Hit_Time >= 1:
             if accesory_type == 1:
-                A2_Hit_Time -= 1
+                A2_Hit_Time -= 2
                 screen.blit(Hitmarker, ((A2['rect'][0] - 6), (A2['rect'][1] - 4)))
             else:
-                A2_Hit_Time -= .3
-                screen.blit(Broken_Asteroid, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+                A2_Hit_Time -= .6
+                if A2_Hit_Time > 2.5:
+                    screen.blit(Broken_Asteroid, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_2, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
 
         if A3_Hit_Time >= 1:
             if accesory_type == 1:
-                A3_Hit_Time -= 1
+                A3_Hit_Time -= 2
                 screen.blit(Hitmarker, ((A3['rect'][0] - 6), (A3['rect'][1] - 4)))
             else:
-                A3_Hit_Time -= .3
-                screen.blit(Broken_Asteroid, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+                A3_Hit_Time -= .6
+                if A3_Hit_Time > 2.5:
+                    screen.blit(Broken_Asteroid, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_2, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
 
         if A4_Hit_Time >= 1:
             if accesory_type == 1:
-                A4_Hit_Time -= 1
+                A4_Hit_Time -= 2
                 screen.blit(Hitmarker, ((A4['rect'][0] - 6), (A4['rect'][1] - 4)))
             else:
-                A4_Hit_Time -= .3
-                screen.blit(Broken_Asteroid, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+                A4_Hit_Time -= .6
+                if A4_Hit_Time > 2.5:
+                    screen.blit(Broken_Asteroid, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_2, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
 
         # Asteroid collision
         if doRectsOverlap(A1["rect"], Ship_sensor["rect"]):
