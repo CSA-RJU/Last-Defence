@@ -66,3 +66,5 @@ what I think was a complete lag fix. I can't be totally sure, though, my compute
 just have to see how it runs on somebody else's. I say I think for the fix because, the lag has noticeably disappeared from what I can 
 tell, however, I have not been able to run sufficient tests, so it is possible that there are a few new appearing bugs that I will 
 need to double check, I have patched the ones I could see right off the bat, but I'm not sure how well. Only time will tell.
+
+There is one last thing I feel I should mention. With all the effort I put into making this game look great, the asteroids just kind of disappear, so I will need to add that. Note that I already Have everything lined up in my head for how I will make that happen, I just had other priorities before making that happen.
