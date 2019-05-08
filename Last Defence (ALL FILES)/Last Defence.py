@@ -35,14 +35,15 @@
 ##The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read http://www.gnu.org/philosophy/why-not-lgpl.html.
 
 import pygame, random, os
-from sprite_maker import Ship, Asteroid, Star, Beam, Big_Beam, Torpidorito, LilFlame, Flame
+from sprite_maker import Ship, Asteroid, Star, Beam, Big_Beam, Gold_Beam, Torpidorito, LilFlame, Flame
 
-global carryOn, titleOn, Ptext, Ttext, HTPtext, Ctext, timeout, FUEL, ship_type, accesory_type, FUEL_GAIN, PU_COUNT, SHIELD, SCORE, HEALTH, HEALTH_GAIN, rect_beams, traffic_speedy, speed_points, all_scoreslist1, all_scoreslist2, Power_up_y, Game_finish, WIN, START_UP, Galaxy, SoundMute, MusicMute, SONG_END
+global carryOn, titleOn, Ptext, Ttext, HTPtext, Ctext, timeout, FUEL, ship_type, accesory_type, FUEL_GAIN, SHIELD, RF_FUEL, MLG_SHOTS, PU_COUNT, SCORE, HEALTH, HEALTH_GAIN, rect_beams, traffic_speedy, speed_points, all_scoreslist1, all_scoreslist2, Power_up_y, Game_finish, WIN, START_UP, Galaxy, SoundMute, MusicMute, SONG_END
 
 SONG_END = pygame.USEREVENT + 1
 pygame.mixer.music.set_endevent(SONG_END)
 
-pygame.mixer.pre_init(50000, 16, 20, 0) #frequency, size, channels, buffersize
+pygame.mixer.pre_init(44100, 16, 20, 0) #frequency, size, channels, buffersize
+
 pygame.init()
 
 #Colors  ( R )( G )( B )
@@ -69,6 +70,7 @@ BEAMSIZEy = 12
 B_BEAM_CHARGE = 0
 M_BEAM_CHARGE = 0
 FUEL = 3600
+COIN_FRAME = 1
 PU_COUNT = 0
 SHIELD = 0
 MLG_SHOTS = 0
@@ -101,6 +103,10 @@ Rem1_image = False
 Rem2_image = False
 Rem3_image = False
 Rem4_image = False
+Rem1_coin = False
+Rem2_coin = False
+Rem3_coin = False
+Rem4_coin = False
 RemPU_rect = False
 Crash1 = False
 Crash2 = False
@@ -171,6 +177,10 @@ Bubble = pygame.image.load('Bubble.png')
 Health = pygame.image.load('health.jpg')
 Health_Bar = pygame.image.load('health bar.png')
 Fuel = pygame.image.load('fuel.jpg')
+Coin_F1 = pygame.image.load('Coin (1).png')
+Coin_F2 = pygame.image.load('Coin (2).png')
+Coin_F3 = pygame.image.load('Coin (3).png')
+Coin_F4 = pygame.image.load('Coin (4).png')
 Hitmarker = pygame.image.load('HITMARKER.png')
 Broken_Asteroid = pygame.image.load('asteroid (broken).png')
 Broken_Asteroid_2 = pygame.image.load('asteroid (broken)2.png')
@@ -605,7 +615,7 @@ def isPointInsideRect(x, y, rect):
 
 # Title Screen
 def Title_screen():
-    global carryOn, titleOn, Ptext, Ctext, Ttext, asteroids, timeout, FUEL, accesory_type, FUEL_GAIN, SCORE, HEALTH, HEALTH_GAIN, SHIELD, PU_COUNT, rect_beams, traffic_speedy, speed_points, Power_up_y, Galaxy, SoundMute, MusicMute, SONG_END, Game_finish
+    global carryOn, titleOn, Ptext, Ctext, Ttext, asteroids, timeout, FUEL, accesory_type, FUEL_GAIN, SCORE, HEALTH, HEALTH_GAIN, SHIELD, RF_FUEL, MLG_SHOTS, PU_COUNT, rect_beams, traffic_speedy, speed_points, Power_up_y, Galaxy, SoundMute, MusicMute, SONG_END, Game_finish
     carryOn = False
     titleOn = True
     asteroids = []
@@ -615,6 +625,8 @@ def Title_screen():
     FUEL = 3601
     FUEL_GAIN = 0
     SHIELD = 0
+    RF_FUEL = 0
+    MLG_SHOTS = 0
     PU_COUNT = 0
     Power_up_y = -2000
     Ptext = "off"
@@ -643,10 +655,15 @@ def Title_screen():
                 if MusicMute == "off":
                     Titlesong = pygame.mixer.music.load('Dance Energetic.wav')
                     pygame.mixer.music.play(-1)
+            else:
+                if MusicMute =="off":
+                    Titlesong = pygame.mixer.music.load('Dance Energetic.wav')
+                    pygame.mixer.music.play(-1)
     else:
         if MusicMute == "off":
             Titlesong = pygame.mixer.music.load('Dance Energetic.wav')
             pygame.mixer.music.play(-1)
+
     
     screen.blit(Title_Galaxy, (0, 0))
     traffic_speedy = 1
@@ -697,8 +714,7 @@ def Unpause():
     carryOn = True
     titleOn = False
     START_UP = False
-    if Ptext == "on" or Ttext == "on":
-        pygame.mixer.music.stop()
+    if Ptext == "on" or Ttext == "on" or Ctext == "on":
         Playsong = pygame.mixer.music.load('Video Game 2.wav')
         if MusicMute == "off":
             pygame.mixer.music.play(-1)
@@ -742,7 +758,10 @@ while everyOn:
             if event.key == pygame.K_u:
                 if carryOn == True:
                     beams.append(pygame.Rect(NEWBEAMx1, playerCar.rect.y +  0, BEAMSIZEx, BEAMSIZEy))
-                    Newbiem = (rect_beams.add(Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                    if ship_type >= 1 and ship_type <= 3:
+                        Newbiem = (rect_beams.add(Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                    elif ship_type == 4:
+                        Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
                     if SoundMute == "off":
                         Pew.play()
                 if Ptext == "on":
@@ -750,19 +769,18 @@ while everyOn:
 
             # When "I" is pressed
             if event.key == pygame.K_i:
-                if carryOn == True and B_BEAM_CHARGE <= 0 and accesory_type == 1:
+                if carryOn == True and B_BEAM_CHARGE <= 0:
                     beams.append(pygame.Rect(NEWBEAMx1 - 5, playerCar.rect.y + 10, BEAMSIZEx + 10, BEAMSIZEy + 40))
-                    Newbiem = (rect_beams.add(Torpidorito((NEWBEAMx1 - 23), (playerCar.rect.y + 5), BEAMSIZEx, BEAMSIZEy, 20)))
+                    if accesory_type == 1:
+                        Newbiem = (rect_beams.add(Torpidorito((NEWBEAMx1 - 23), (playerCar.rect.y + 5), BEAMSIZEx, BEAMSIZEy, 20)))
+##                        MLG_SHOTS -= 1
+                        if SoundMute == "off":
+                            Snipe.play()
+                    else:
+                        Newbiem = (rect_beams.add(Big_Beam((NEWBEAMx1 - 48), (playerCar.rect.y - 85), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                     B_BEAM_CHARGE = 30
-##                    MLG_SHOTS -= 1
-                    if SoundMute == "off":
-                        Snipe.play()
-                elif carryOn == True and B_BEAM_CHARGE <= 0:
-                    beams.append(pygame.Rect(NEWBEAMx1 - 6, playerCar.rect.y - 38, BEAMSIZEx + 10, BEAMSIZEy + 40))
-                    Newbiem = (rect_beams.add(Big_Beam((NEWBEAMx1 - 48), (playerCar.rect.y - 85), BEAMSIZEx, BEAMSIZEy, 20)))
-                    B_BEAM_CHARGE = 30
-                    if SoundMute == "off":
-                        Pew.play()
                         
                 if Ptext == "on" and Ctext == "off":
                     Weaponry_screen()
@@ -775,7 +793,10 @@ while everyOn:
                 for i in range(40):
                     NEWBEAMx2 = random.randint(0, SCREENWIDTH - BEAMSIZEx)
                     beams.append(pygame.Rect(NEWBEAMx2, SCREENHEIGHT + 30, BEAMSIZEx, BEAMSIZEy))
-                    Newbiem = (rect_beams.add(Beam((NEWBEAMx2 - 10), (SCREENHEIGHT), BEAMSIZEx, BEAMSIZEy, 20)))
+                    if ship_type >= 1 and ship_type <= 3:
+                        Newbiem = (rect_beams.add(Beam((NEWBEAMx2), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                    elif ship_type == 4:
+                        Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx2), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
                     if SoundMute == "off":
                         Pew.play()
                 M_BEAM_CHARGE = 350
@@ -958,7 +979,62 @@ while everyOn:
 
     else:
         screen.blit(Galaxy, (0, 0))
-        
+
+    # Coin Animation
+    ## Shows the second digit of the variable resosnible for counting frames
+    if Ptext == "off":
+        if COIN_FRAME >= 11:
+            COIN_FRAME -= 1
+        else:
+            COIN_FRAME = 89
+
+        ## Setting a framerate for the coin animation
+        stopper = 0
+        for i in str(COIN_FRAME):
+            stopper += 1
+            if stopper == 1:
+                first_digit = int(i)
+    
+    if Rem1_image == True and Rem1_coin == False and titleOn == False and ship_type == 4:
+        if first_digit == 1 or first_digit == 5:
+            screen.blit(Coin_F1, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+        elif first_digit == 2 or first_digit == 6:
+            screen.blit(Coin_F2, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+        elif first_digit == 3 or first_digit == 7:
+            screen.blit(Coin_F3, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+        elif first_digit == 4 or first_digit == 8:
+            screen.blit(Coin_F4, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+            
+    if Rem2_image == True and Rem2_coin == False and titleOn == False and ship_type == 4:
+        if first_digit == 1 or first_digit == 5:
+            screen.blit(Coin_F1, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+        elif first_digit == 2 or first_digit == 6:
+            screen.blit(Coin_F2, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+        elif first_digit == 3 or first_digit == 7:
+            screen.blit(Coin_F3, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+        elif first_digit == 4 or first_digit == 8:
+            screen.blit(Coin_F4, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+            
+    if Rem3_image == True and Rem3_coin == False and titleOn == False and ship_type == 4:
+        if first_digit == 1 or first_digit == 5:
+            screen.blit(Coin_F1, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+        elif first_digit == 2 or first_digit == 6:
+            screen.blit(Coin_F2, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+        elif first_digit == 3 or first_digit == 7:
+            screen.blit(Coin_F3, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+        elif first_digit == 4 or first_digit == 8:
+            screen.blit(Coin_F4, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+
+    if Rem4_image == True and Rem4_coin == False and titleOn == False and ship_type == 4:
+        if first_digit == 1 or first_digit == 5:
+            screen.blit(Coin_F1, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+        elif first_digit == 2 or first_digit == 6:
+            screen.blit(Coin_F2, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+        elif first_digit == 3 or first_digit == 7:
+            screen.blit(Coin_F3, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+        elif first_digit == 4 or first_digit == 8:
+            screen.blit(Coin_F4, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+
     # While not on title screen:
     if titleOn == False:
         all_coming_decor.update()
@@ -1179,7 +1255,8 @@ while everyOn:
                         else:
                             Crunch.play()
                     A4_Hit_Time = 6
-
+        
+        # Animations after an asteroid is hit
         if A1_Hit_Time >= 1:
             if accesory_type == 1:
                 A1_Hit_Time -= 2
@@ -1190,7 +1267,7 @@ while everyOn:
                     screen.blit(Broken_Asteroid, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
                 else:
                     screen.blit(Broken_Asteroid_2, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
-
+                
         if A2_Hit_Time >= 1:
             if accesory_type == 1:
                 A2_Hit_Time -= 2
@@ -1239,6 +1316,9 @@ while everyOn:
                 else:
                     if SoundMute == "off":
                         Ship_Hit.play()
+            elif Rem1_image == True and Rem1_coin == False and ship_type == 4:
+                SCORE += 200
+                Rem1_coin = True
             Rem1_rect = True
             Rem1_image = True
         if doRectsOverlap(A2["rect"], Ship_sensor["rect"]):
@@ -1255,6 +1335,9 @@ while everyOn:
                 else:
                     if SoundMute == "off":
                         Ship_Hit.play()
+            elif Rem2_image == True and Rem2_coin == False and ship_type == 4:
+                SCORE += 200
+                Rem2_coin = True
             Rem2_rect = True
             Rem2_image = True
         if doRectsOverlap(A3["rect"], Ship_sensor["rect"]):
@@ -1271,6 +1354,9 @@ while everyOn:
                 else:
                     if SoundMute == "off":
                         Ship_Hit.play()
+            elif Rem3_image == True and Rem3_coin == False and ship_type == 4:
+                SCORE += 200
+                Rem3_coin = True
             Rem3_rect = True
             Rem3_image = True
         if doRectsOverlap(A4["rect"], Ship_sensor["rect"]):
@@ -1287,6 +1373,9 @@ while everyOn:
                 else:
                     if SoundMute == "off":
                         Ship_Hit.play()
+            elif Rem4_image == True and Rem4_coin == False and ship_type == 4:
+                SCORE += 200
+                Rem4_coin = True
             Rem4_rect = True
             Rem4_image = True
         if doRectsOverlap(Ship_sensor["rect"], Power_up["rect"]):
@@ -1350,7 +1439,10 @@ while everyOn:
         if RF_FUEL >= 1:
             RF_FUEL -= 1 
             beams.append(pygame.Rect(playerCar.rect.x + 40, playerCar.rect.y +  0, BEAMSIZEx, BEAMSIZEy))
-            Newbiem = (rect_beams.add(Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+            if ship_type >= 1 and ship_type <= 3:
+                Newbiem = (rect_beams.add(Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+            elif ship_type == 4:
+                Newbiem = (rect_beams.add(Gold_Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
             if SoundMute == "off":
                 Pew.play()
 
@@ -1393,6 +1485,7 @@ while everyOn:
                 SCORE -= 100
             Rem1_rect = False
             Rem1_image = False
+            Rem1_coin = False
         if car2.rect.y > SCREENHEIGHT:
             car2.changeSpeed(random.randint(50, 100))
             car2.rect.y = -200
@@ -1400,6 +1493,7 @@ while everyOn:
                 SCORE -= 100
             Rem2_rect = False
             Rem2_image = False
+            Rem2_coin = False
         if car3.rect.y > SCREENHEIGHT:
             car3.changeSpeed(random.randint(50, 100))
             car3.rect.y = -200
@@ -1407,6 +1501,7 @@ while everyOn:
                 SCORE -= 100
             Rem3_rect = False
             Rem3_image = False
+            Rem3_coin = False
         if car4.rect.y > SCREENHEIGHT:
             car4.changeSpeed(random.randint(50, 100))
             car4.rect.y = -200
@@ -1414,6 +1509,7 @@ while everyOn:
                 SCORE -= 100
             Rem4_rect = False
             Rem4_image = False
+            Rem4_coin = False
         if Power_up_y > SCREENHEIGHT:
             PU_type = random.randrange(1,4)
             Power_up_x = random.randrange(5, 631)
