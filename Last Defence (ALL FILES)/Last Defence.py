@@ -206,6 +206,7 @@ Pew = pygame.mixer.Sound('Pew.wav')
 Win = pygame.mixer.Sound('Win (WAV).wav')
 Lose = pygame.mixer.Sound('Oops.wav')
 Collect = pygame.mixer.Sound('Coin.wav')
+Coin = pygame.mixer.Sound('Collect.wav')
 Ship_Hit = pygame.mixer.Sound('Clang.wav')
 Reflect = pygame.mixer.Sound('Squeaky Toy.wav')
 Error = pygame.mixer.Sound('XP ERROR.wav')
@@ -1319,6 +1320,8 @@ while everyOn:
             elif Rem1_image == True and Rem1_coin == False and ship_type == 4:
                 SCORE += 200
                 Rem1_coin = True
+                if SoundMute == "off":
+                    Coin.play()
             Rem1_rect = True
             Rem1_image = True
         if doRectsOverlap(A2["rect"], Ship_sensor["rect"]):
@@ -1338,6 +1341,8 @@ while everyOn:
             elif Rem2_image == True and Rem2_coin == False and ship_type == 4:
                 SCORE += 200
                 Rem2_coin = True
+                if SoundMute == "off":
+                    Coin.play()
             Rem2_rect = True
             Rem2_image = True
         if doRectsOverlap(A3["rect"], Ship_sensor["rect"]):
@@ -1357,6 +1362,8 @@ while everyOn:
             elif Rem3_image == True and Rem3_coin == False and ship_type == 4:
                 SCORE += 200
                 Rem3_coin = True
+                if SoundMute == "off":
+                    Coin.play()
             Rem3_rect = True
             Rem3_image = True
         if doRectsOverlap(A4["rect"], Ship_sensor["rect"]):
@@ -1376,6 +1383,8 @@ while everyOn:
             elif Rem4_image == True and Rem4_coin == False and ship_type == 4:
                 SCORE += 200
                 Rem4_coin = True
+                if SoundMute == "off":
+                    Coin.play()
             Rem4_rect = True
             Rem4_image = True
         if doRectsOverlap(Ship_sensor["rect"], Power_up["rect"]):
