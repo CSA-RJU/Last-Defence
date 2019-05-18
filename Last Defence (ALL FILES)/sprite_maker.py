@@ -215,6 +215,96 @@ class Gold_Beam(pygame.sprite.Sprite):
         if self.rect.y >= -101 and self.rect.y <= 600:
             self.rect.y -= speed
 
+class Big_Gold_Beam(pygame.sprite.Sprite):
+    # This class represents a car. It derives from the "Sprite" class in Pygame.
+
+    def __init__(self, x, y, width, height, speed):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        # Pass in the color of the car, and its x and y position, width and height.
+        # Set the background color and set it to be transparent
+        self.image = pygame.Surface([width, height])
+        self.image.fill(WHITE)
+        self.image.set_colorkey(WHITE)
+
+        # Initialise attributes of the car.
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = speed
+
+        # Instead we could load a proper picture of a car...
+        self.image = pygame.image.load("big_beam-S.png").convert_alpha()
+
+        # Fetch the rectangle object that has the dimensions of the image.
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+    def moveForward(self, speed):
+        if self.rect.y >= -301 and self.rect.y <= 600:
+            self.rect.y -= speed
+
+class Dist_Beam(pygame.sprite.Sprite):
+    # This class represents a car. It derives from the "Sprite" class in Pygame.
+
+    def __init__(self, x, y, width, height, speed):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        # Pass in the color of the car, and its x and y position, width and height.
+        # Set the background color and set it to be transparent
+        self.image = pygame.Surface([width, height])
+        self.image.fill(WHITE)
+        self.image.set_colorkey(WHITE)
+
+        # Initialise attributes of the car.
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = speed
+
+        # Instead we could load a proper picture of a car...
+        self.image = pygame.image.load("beam-D.png").convert_alpha()
+
+        # Fetch the rectangle object that has the dimensions of the image.
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+    def moveForward(self, speed):
+        if self.rect.y >= -101 and self.rect.y <= 600:
+            self.rect.y -= speed
+
+class Big_Dist_Beam(pygame.sprite.Sprite):
+    # This class represents a car. It derives from the "Sprite" class in Pygame.
+
+    def __init__(self, x, y, width, height, speed):
+        # Call the parent class (Sprite) constructor
+        super().__init__()
+
+        # Pass in the color of the car, and its x and y position, width and height.
+        # Set the background color and set it to be transparent
+        self.image = pygame.Surface([width, height])
+        self.image.fill(WHITE)
+        self.image.set_colorkey(WHITE)
+
+        # Initialise attributes of the car.
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = speed
+
+        # Instead we could load a proper picture of a car...
+        self.image = pygame.image.load("big_beam-D.png").convert_alpha()
+
+        # Fetch the rectangle object that has the dimensions of the image.
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+    def moveForward(self, speed):
+        if self.rect.y >= -301 and self.rect.y <= 600:
+            self.rect.y -= speed
+
 class Torpidorito(pygame.sprite.Sprite):
     # This class represents a car. It derives from the "Sprite" class in Pygame.
 
@@ -242,7 +332,7 @@ class Torpidorito(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def moveForward(self, speed):
-        if self.rect.y >= -301 and self.rect.y <= 600:
+        if self.rect.y >= -101 and self.rect.y <= 600:
             self.rect.y -= speed
 
 class LilFlame(pygame.sprite.Sprite):

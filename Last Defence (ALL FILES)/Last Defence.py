@@ -35,7 +35,7 @@
 ##The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read http://www.gnu.org/philosophy/why-not-lgpl.html.
 
 import pygame, random, os
-from sprite_maker import Ship, Asteroid, Star, Beam, Big_Beam, Gold_Beam, Torpidorito, LilFlame, Flame
+from sprite_maker import Ship, Asteroid, Star, Beam, Big_Beam, Gold_Beam, Big_Gold_Beam, Dist_Beam, Big_Dist_Beam, Torpidorito, LilFlame, Flame
 
 global carryOn, titleOn, Ptext, Ttext, HTPtext, Ctext, timeout, FUEL, ship_type, accesory_type, FUEL_GAIN, SHIELD, RF_FUEL, MLG_SHOTS, PU_COUNT, SCORE, HEALTH, HEALTH_GAIN, rect_beams, traffic_speedy, speed_points, all_scoreslist1, all_scoreslist2, Power_up_y, Game_finish, WIN, START_UP, Galaxy, SoundMute, MusicMute, SONG_END
 
@@ -60,7 +60,7 @@ colorList = (RED, GREEN, PURPLE, YELLOW, CYAN, BLUE)
 
 # Mis. definitions
 traffic_speedy = 1
-decor_speedy = 10
+decor_speedy = 10 
 LRspeed = 0
 speed_points = 0
 color = 1
@@ -90,7 +90,7 @@ mousexy = (0, 0)
 beams = []
 asteroids = []
 Game_finish = True
-Score_Reset = False
+Score_Reset = True
 WIN = False
 START_UP = True
 timeout = False
@@ -162,15 +162,32 @@ BigShipS = pygame.transform.scale(ShipS, (160, 232))
 ShipS_L  = pygame.image.load('Spaceship-S (Locked).png').convert_alpha()
 BigShipS_L  = pygame.transform.scale(ShipS_L, (160, 232))
 
-How_to_Play = pygame.image.load('How to Play.jpg')
+Ship_Desc_1  = pygame.image.load('ship description (1).png')
+Ship_Desc_1B  = pygame.image.load('ship description (1B).png')
+Ship_Desc_2  = pygame.image.load('ship description (2).png')
+Ship_Desc_2B  = pygame.image.load('ship description (2B).png')
+Ship_Desc_3  = pygame.image.load('ship description (3).png')
+Ship_Desc_3B  = pygame.image.load('ship description (3B).png')
+Ship_Desc_S  = pygame.image.load('ship description (S).png')
+Ship_Desc_SB  = pygame.image.load('ship description (SB).png')
+
+## Accessories
+MLGlasses = pygame.image.load('MLGlasses.png').convert_alpha()
+BigMLGlasses = pygame.transform.scale(MLGlasses, (230, 112))
+Angry_Eyes = pygame.image.load('angry eyes.png').convert_alpha()
+BigAngry_Eyes = pygame.transform.scale(Angry_Eyes, (190, 112))
+
+Accesory_Desc_0  = pygame.image.load('accesory description (0).png')
+Accesory_Desc_1  = pygame.image.load('accesory description (1).png')
+Accesory_Desc_2  = pygame.image.load('accesory description (2).png')
+
+How_to_Play = pygame.image.load('How to Play.png')
 
 ## Power ups
 Time_Up = pygame.image.load('Time +.png')
 Shield = pygame.image.load('Shield.png')
 Rapid_Fire = pygame.image.load('Rapid Fire.png')
 MLG = pygame.image.load('MLG.png')
-MLGlasses = pygame.image.load('MLGlasses.png').convert_alpha()
-BigMLGlasses = pygame.transform.scale(MLGlasses, (230, 112))
 Bubble = pygame.image.load('Bubble.png')
 
 ## Duplicates
@@ -184,6 +201,7 @@ Coin_F4 = pygame.image.load('Coin (4).png')
 Hitmarker = pygame.image.load('HITMARKER.png')
 Broken_Asteroid = pygame.image.load('asteroid (broken).png')
 Broken_Asteroid_2 = pygame.image.load('asteroid (broken)2.png')
+Broken_Asteroid_3 = pygame.image.load('asteroid (broken)3.png')
 
 ## GUIs
 Title_Gui = pygame.image.load('TITLE GUI.png')
@@ -196,15 +214,19 @@ Pause_Gui = pygame.image.load('PAUSED.png')
 Customize_Gui = pygame.image.load('CUSTOMIZE GUI.png')
 Customize_Arrows = pygame.image.load('CUSTOMIZE ARROWS.png')
 Customize_Na = pygame.image.load('CUSTOMIZE NA.png')
+Customize_Back = pygame.image.load('CUSTOMIZE BACK.png')
 
 # Music
 Titlesong = pygame.mixer.music.load('Dance Energetic.wav')
 
 # Sounds
 Crunch = pygame.mixer.Sound('Crunch.wav')
+Crunch_D = pygame.mixer.Sound('Crunch-D.wav')
 Pew = pygame.mixer.Sound('Pew.wav')
+Pew_D = pygame.mixer.Sound('Pew-D.wav')
 Win = pygame.mixer.Sound('Win (WAV).wav')
 Lose = pygame.mixer.Sound('Oops.wav')
+Evil_Laugh = pygame.mixer.Sound('Evil Laugh.wav')
 Collect = pygame.mixer.Sound('Coin.wav')
 Coin = pygame.mixer.Sound('Collect.wav')
 Ship_Hit = pygame.mixer.Sound('Clang.wav')
@@ -589,6 +611,9 @@ def Reset_scores():
     if ship_type == 4:
         ship_type = 1
 
+    if SoundMute == "off":
+        Evil_Laugh.play()
+
     Score_Reset = True
 
     all_scoreslist1 = [("1:0:"), ("2:0:"), ("3:0:"), ("4:0:"), ("5:0:"), ("6:0:"), ("7:0:"), ("8:0:"), ("9:0:"), ("10:0:")]
@@ -759,12 +784,18 @@ while everyOn:
             if event.key == pygame.K_u:
                 if carryOn == True:
                     beams.append(pygame.Rect(NEWBEAMx1, playerCar.rect.y +  0, BEAMSIZEx, BEAMSIZEy))
-                    if ship_type >= 1 and ship_type <= 3:
+                    if accesory_type == 2:
+                        Newbiem = (rect_beams.add(Dist_Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew_D.play()
+                    elif ship_type >= 1 and ship_type <= 3:
                         Newbiem = (rect_beams.add(Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                     elif ship_type == 4:
                         Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx1 - 10), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
-                    if SoundMute == "off":
-                        Pew.play()
+                        if SoundMute == "off":
+                            Pew.play()
                 if Ptext == "on":
                     Title_screen()
 
@@ -777,6 +808,14 @@ while everyOn:
 ##                        MLG_SHOTS -= 1
                         if SoundMute == "off":
                             Snipe.play()
+                    elif accesory_type == 2:
+                        Newbiem = (rect_beams.add(Big_Dist_Beam((NEWBEAMx1 - 48), (playerCar.rect.y - 85), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew_D.play()
+                    elif ship_type == 4:
+                        Newbiem = (rect_beams.add(Big_Gold_Beam((NEWBEAMx1 - 48), (playerCar.rect.y + 85), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                     else:
                         Newbiem = (rect_beams.add(Big_Beam((NEWBEAMx1 - 48), (playerCar.rect.y - 85), BEAMSIZEx, BEAMSIZEy, 20)))
                         if SoundMute == "off":
@@ -791,32 +830,39 @@ while everyOn:
 
             # When "O" is pressed
             if carryOn == True and M_BEAM_CHARGE <= 0 and event.key == pygame.K_o:
+                for i in range(4):
+                    beams.append(pygame.Rect(0 + (150 * i), SCREENHEIGHT - 70, 150, BEAMSIZEy))
                 for i in range(40):
                     NEWBEAMx2 = random.randint(0, SCREENWIDTH - BEAMSIZEx)
-                    beams.append(pygame.Rect(NEWBEAMx2, SCREENHEIGHT + 30, BEAMSIZEx, BEAMSIZEy))
-                    if ship_type >= 1 and ship_type <= 3:
-                        Newbiem = (rect_beams.add(Beam((NEWBEAMx2), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                    if accesory_type == 2:
+                        Newbiem = (rect_beams.add(Dist_Beam((NEWBEAMx2), (SCREENHEIGHT - 60), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew_D.play()
+                    elif ship_type >= 1 and ship_type <= 3:
+                        Newbiem = (rect_beams.add(Beam((NEWBEAMx2), (SCREENHEIGHT - 60), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                     elif ship_type == 4:
-                        Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx2), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
-                    if SoundMute == "off":
-                        Pew.play()
+                        Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx2), (SCREENHEIGHT - 60), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                 M_BEAM_CHARGE = 350
                 
             # When "W" is pressed
             if event.key == pygame.K_w or event.key == pygame.K_UP:
                 if Ttext == "off" and Ptext == "off" and Ctext == "on":
-                    if accesory_type > 0:
-                        accesory_type -= 1
-                    elif accesory_type == 0:
-                        accesory_type = 1
+                    if accesory_type < 2:
+                        accesory_type += 1
+                    elif accesory_type == 2:
+                        accesory_type = 0
                         
             # When "S" is pressed
             if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                 if Ttext == "off" and Ptext == "off" and Ctext == "on":
-                    if accesory_type < 1:
-                        accesory_type += 1
-                    elif accesory_type == 1:
-                        accesory_type = 0
+                    if accesory_type > 0:
+                        accesory_type -= 1
+                    elif accesory_type == 0:
+                        accesory_type = 2
 
             # When "A" is pressed
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
@@ -840,10 +886,10 @@ while everyOn:
         if event.type == 5:
             #How to play button
             if Ttext == "on" and HTPtext == "off":
-                if mousexy[0] >= 270 and mousexy[0] <= (270 + 320) and mousexy[1] >= 360 and mousexy[1] <= (360 + 100):
+                if mousexy[0] >= 270 and mousexy[0] <= (270 + 360) and mousexy[1] >= 360 and mousexy[1] <= (360 + 100):
                     HTPtext = "on"
             elif Ttext == "on" and HTPtext == "on":
-                if mousexy[0] >= 520 and mousexy[0] <= (520 + 125) and mousexy[1] >= 438 and mousexy[1] <= (438 + 50):
+                if mousexy[0] >= 540 and mousexy[0] <= (540 + 120) and mousexy[1] >= 439 and mousexy[1] <= (439 + 50):
                     HTPtext = "off"
 
             #Highscore reset button
@@ -919,16 +965,16 @@ while everyOn:
             if Ttext == "off" and Ptext == "off" and Ctext == "on":
                 ##Up
                 if mousexy[0] >= 468 and mousexy[0] <= (468 + 94) and mousexy[1] >= 72 and mousexy[1] <= (72 + 56):
+                    if accesory_type < 2:
+                        accesory_type += 1
+                    elif accesory_type == 2:
+                        accesory_type = 0
+                ##Down
+                if mousexy[0] >= 468 and mousexy[0] <= (468 + 94) and mousexy[1] >= 233 and mousexy[1] <= (233 + 56):
                     if accesory_type > 0:
                         accesory_type -= 1
                     elif accesory_type == 0:
-                        accesory_type = 1
-                ##Down
-                if mousexy[0] >= 468 and mousexy[0] <= (468 + 94) and mousexy[1] >= 233 and mousexy[1] <= (233 + 56):
-                    if accesory_type < 1:
-                        accesory_type += 1
-                    elif accesory_type == 1:
-                        accesory_type = 0
+                        accesory_type = 2
 
 
     # Only for title screen:
@@ -976,7 +1022,7 @@ while everyOn:
         
         if HTPtext == "on":
             screen.blit(How_to_Play, (0, 0))
-            pygame.draw.rect(screen, BLACK, (520, 438, 125, 50), 5)
+            pygame.draw.rect(screen, BLACK, (540, 439, 120, 50), 5)
 
     else:
         screen.blit(Galaxy, (0, 0))
@@ -1064,6 +1110,8 @@ while everyOn:
                 Newflaim = (rect_flames.add(LilFlame((NEWFLAMEx + 1 + random.randrange(-4,5)), (playerCar.rect.y + 15), BEAMSIZEx, BEAMSIZEy, 5)))
             #if SoundMute == "off":
                 #Pew.play()
+
+    # Drawing asteroids
     if Rem1_image == False and titleOn == False:
         car1_list.draw(screen)
         if carryOn:
@@ -1109,8 +1157,11 @@ while everyOn:
         pu_counttextSurface = pu_countfont.render("x0", True, GREY) #If power up is shield
     screen.blit(pu_counttextSurface, pu_counttextRect)
 
+    # Draqawing accessories
     if accesory_type == 1 and Ttext == "off":
         screen.blit(MLGlasses, (playerCar.rect.x - 25, playerCar.rect.y + 10))
+    if accesory_type == 2 and Ttext == "off":
+        screen.blit(Angry_Eyes, (playerCar.rect.x - 8, playerCar.rect.y + 10))
     
     if SHIELD >= 1 and titleOn == False:
         if SHIELD >= 1 and SHIELD <= 20 or SHIELD >= 31 and SHIELD <= 50 or SHIELD >= 61 and SHIELD <= 80 or SHIELD >= 91 and SHIELD <= 110 or SHIELD >= 121 and SHIELD <= 140 or SHIELD >= 160:
@@ -1151,25 +1202,38 @@ while everyOn:
         if ship_type == 1:
             screen.blit(Ship1, (310, 350))
             screen.blit(BigShip1, (110, 90))
+            screen.blit(Ship_Desc_1, (0, 0))
         elif ship_type == 2:
             screen.blit(Ship2, (310, 350))
             screen.blit(BigShip2, (110, 90))
+            screen.blit(Ship_Desc_2, (0, 0))
         elif ship_type == 3:
             screen.blit(Ship3, (310, 350))
             screen.blit(BigShip3, (110, 90))
+            screen.blit(Ship_Desc_3, (0, 0))
         elif ship_type == 4:
             if int(all_scoreslist2[0]) >= 7500:
                 screen.blit(ShipS, (310, 350))
                 screen.blit(BigShipS, (110, 90))
+                screen.blit(Ship_Desc_S, (0, 0))
             else:
                 screen.blit(ShipS_L, (310, 350))
                 screen.blit(BigShipS_L, (110, 90))
+                screen.blit(Ship_Desc_SB, (0, 0))
+                
         if accesory_type == 0:
             screen.blit(Customize_Na, (0, 0))
+            screen.blit(Accesory_Desc_0, (0, 0))
         elif accesory_type == 1:
             screen.blit(MLGlasses, (285, 360))
             screen.blit(BigMLGlasses, (405, 120))
+            screen.blit(Accesory_Desc_1, (0, 0))
+        elif accesory_type == 2:
+            screen.blit(Angry_Eyes, (302, 360))
+            screen.blit(BigAngry_Eyes, (420, 120))
+            screen.blit(Accesory_Desc_2, (0, 0))
         screen.blit(Customize_Arrows, (0, 0))
+        screen.blit(Customize_Back, (0, 0))
     
     if HTPtext == "off" and Ttext == "off":
         screen.blit(timetextSurface, timetextRect)
@@ -1213,48 +1277,80 @@ while everyOn:
                 if A1['rect'][1] >= -50 and Rem1_rect == False and Rem1_image == False:
                     Rem1_rect = True
                     Rem1_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
                         else:
-                            Crunch.play()
+                            if accesory_type == 2:
+                                Crunch_D.play()
+                            else:
+                                Crunch.play()
                     A1_Hit_Time = 6
             elif doRectsOverlap(A2['rect'], beam):
                 beams.remove(beam)
                 if A2['rect'][1] >= -50 and Rem2_rect == False and Rem2_image == False:
                     Rem2_rect = True
                     Rem2_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
                         else:
-                            Crunch.play()
+                            if accesory_type == 2:
+                                Crunch_D.play()
+                            else:
+                                Crunch.play()
                     A2_Hit_Time = 6
             elif doRectsOverlap(A3['rect'], beam):
                 beams.remove(beam)
                 if A3['rect'][1] >= -50 and Rem3_rect == False and Rem3_image == False:
                     Rem3_rect = True
                     Rem3_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
                         else:
-                            Crunch.play()
+                            if accesory_type == 2:
+                                Crunch_D.play()
+                            else:
+                                Crunch.play()
                     A3_Hit_Time = 6
             elif doRectsOverlap(A4['rect'], beam):
                 beams.remove(beam)
                 if A4['rect'][1] >= -50 and Rem4_rect == False and Rem4_image == False:
                     Rem4_rect = True
                     Rem4_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
                         else:
-                            Crunch.play()
+                            if accesory_type == 2:
+                                Crunch_D.play()
+                            else:
+                                Crunch.play()
                     A4_Hit_Time = 6
         
         # Animations after an asteroid is hit
@@ -1264,10 +1360,12 @@ while everyOn:
                 screen.blit(Hitmarker, ((A1['rect'][0] - 6), (A1['rect'][1] - 4)))
             else:
                 A1_Hit_Time -= .6
-                if A1_Hit_Time > 2.5:
+                if A1_Hit_Time > 4: 
                     screen.blit(Broken_Asteroid, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
-                else:
+                elif A1_Hit_Time > 2: 
                     screen.blit(Broken_Asteroid_2, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_3, ((A1['rect'][0] - 58), (A1['rect'][1] - 100)))
                 
         if A2_Hit_Time >= 1:
             if accesory_type == 1:
@@ -1275,10 +1373,12 @@ while everyOn:
                 screen.blit(Hitmarker, ((A2['rect'][0] - 6), (A2['rect'][1] - 4)))
             else:
                 A2_Hit_Time -= .6
-                if A2_Hit_Time > 2.5:
+                if A2_Hit_Time > 4:
                     screen.blit(Broken_Asteroid, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
-                else:
+                elif A2_Hit_Time > 2:
                     screen.blit(Broken_Asteroid_2, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_3, ((A2['rect'][0] - 58), (A2['rect'][1] - 100)))
 
         if A3_Hit_Time >= 1:
             if accesory_type == 1:
@@ -1286,10 +1386,12 @@ while everyOn:
                 screen.blit(Hitmarker, ((A3['rect'][0] - 6), (A3['rect'][1] - 4)))
             else:
                 A3_Hit_Time -= .6
-                if A3_Hit_Time > 2.5:
+                if A3_Hit_Time > 4:
                     screen.blit(Broken_Asteroid, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
-                else:
+                elif A3_Hit_Time > 2:
                     screen.blit(Broken_Asteroid_2, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_3, ((A3['rect'][0] - 58), (A3['rect'][1] - 100)))
 
         if A4_Hit_Time >= 1:
             if accesory_type == 1:
@@ -1297,10 +1399,12 @@ while everyOn:
                 screen.blit(Hitmarker, ((A4['rect'][0] - 6), (A4['rect'][1] - 4)))
             else:
                 A4_Hit_Time -= .6
-                if A4_Hit_Time > 2.5:
+                if A4_Hit_Time > 4:
                     screen.blit(Broken_Asteroid, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
-                else:
+                elif A4_Hit_Time > 2:
                     screen.blit(Broken_Asteroid_2, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
+                else:
+                    screen.blit(Broken_Asteroid_3, ((A4['rect'][0] - 58), (A4['rect'][1] - 100)))
 
         # Asteroid collision
         if doRectsOverlap(A1["rect"], Ship_sensor["rect"]):
@@ -1447,13 +1551,19 @@ while everyOn:
 
         if RF_FUEL >= 1:
             RF_FUEL -= 1 
-            beams.append(pygame.Rect(playerCar.rect.x + 40, playerCar.rect.y +  0, BEAMSIZEx, BEAMSIZEy))
-            if ship_type >= 1 and ship_type <= 3:
+            beams.append(pygame.Rect(playerCar.rect.x + 40, playerCar.rect.y + 0, BEAMSIZEx, BEAMSIZEy))
+            if accesory_type == 2:
+                Newbiem = (rect_beams.add(Dist_Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                if SoundMute == "off":
+                    Pew_D.play()
+            elif ship_type >= 1 and ship_type <= 3:
                 Newbiem = (rect_beams.add(Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                if SoundMute == "off":
+                    Pew.play()
             elif ship_type == 4:
                 Newbiem = (rect_beams.add(Gold_Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
-            if SoundMute == "off":
-                Pew.play()
+                if SoundMute == "off":
+                    Pew.play()
 
         if B_BEAM_CHARGE >= 1:
             B_BEAM_CHARGE -= 1
@@ -1478,7 +1588,7 @@ while everyOn:
             entity.moveForward(traffic_speedy)
 
         for beam in rect_beams:
-            if beam.rect.y <= -301:
+            if beam.rect.y <= -200:
                 rect_beams.remove(beam)
             beam.moveForward(20)
 
