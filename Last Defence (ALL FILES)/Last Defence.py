@@ -116,8 +116,8 @@ Ptext = "off"
 HTPtext = "off"
 Ctext = "off"
 AdminBlocktext = "off"
-SoundMute = "on"
-MusicMute = "on"
+SoundMute = "off"
+MusicMute = "off"
 
 # Screen definition
 SCREENWIDTH = 700
