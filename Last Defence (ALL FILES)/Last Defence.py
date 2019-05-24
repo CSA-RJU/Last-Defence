@@ -840,13 +840,12 @@ while everyOn:
                             Pew_D.play()
                     elif ship_type >= 1 and ship_type <= 3:
                         Newbiem = (rect_beams.add(Beam((NEWBEAMx2), (SCREENHEIGHT - 60), BEAMSIZEx, BEAMSIZEy, 20)))
+                        if SoundMute == "off":
+                            Pew.play()
                     elif ship_type == 4:
                         Newbiem = (rect_beams.add(Gold_Beam((NEWBEAMx2), (SCREENHEIGHT - 60), BEAMSIZEx, BEAMSIZEy, 20)))
-                if SoundMute == "off":
-                    if accesory_type == 2:
-                        Pew_D.play()
-                    else:
-                        Pew.play()
+                        if SoundMute == "off":
+                            Pew.play()
                 M_BEAM_CHARGE = 350
                 
             # When "W" is pressed
@@ -887,7 +886,7 @@ while everyOn:
         if event.type == 5:
             #How to play button
             if Ttext == "on" and HTPtext == "off":
-                if mousexy[0] >= 270 and mousexy[0] <= (270 + 320) and mousexy[1] >= 360 and mousexy[1] <= (360 + 100):
+                if mousexy[0] >= 270 and mousexy[0] <= (270 + 360) and mousexy[1] >= 360 and mousexy[1] <= (360 + 100):
                     HTPtext = "on"
             elif Ttext == "on" and HTPtext == "on":
                 if mousexy[0] >= 540 and mousexy[0] <= (540 + 120) and mousexy[1] >= 439 and mousexy[1] <= (439 + 50):
@@ -1278,7 +1277,12 @@ while everyOn:
                 if A1['rect'][1] >= -50 and Rem1_rect == False and Rem1_image == False:
                     Rem1_rect = True
                     Rem1_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
@@ -1293,7 +1297,12 @@ while everyOn:
                 if A2['rect'][1] >= -50 and Rem2_rect == False and Rem2_image == False:
                     Rem2_rect = True
                     Rem2_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
@@ -1308,7 +1317,12 @@ while everyOn:
                 if A3['rect'][1] >= -50 and Rem3_rect == False and Rem3_image == False:
                     Rem3_rect = True
                     Rem3_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
@@ -1323,7 +1337,12 @@ while everyOn:
                 if A4['rect'][1] >= -50 and Rem4_rect == False and Rem4_image == False:
                     Rem4_rect = True
                     Rem4_image = True
-                    SCORE += 200
+                    if ship_type == 1:
+                        SCORE += 100
+                    elif ship_type == 2:
+                        SCORE += 150
+                    elif ship_type == 3 or ship_type == 4:
+                        SCORE += 200
                     if SoundMute == "off":
                         if accesory_type == 1:
                             Hit_marker.play()
@@ -1535,14 +1554,15 @@ while everyOn:
             beams.append(pygame.Rect(playerCar.rect.x + 40, playerCar.rect.y + 0, BEAMSIZEx, BEAMSIZEy))
             if accesory_type == 2:
                 Newbiem = (rect_beams.add(Dist_Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                if SoundMute == "off":
+                    Pew_D.play()
             elif ship_type >= 1 and ship_type <= 3:
                 Newbiem = (rect_beams.add(Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
+                if SoundMute == "off":
+                    Pew.play()
             elif ship_type == 4:
                 Newbiem = (rect_beams.add(Gold_Beam((playerCar.rect.x + 30), (playerCar.rect.y + 10), BEAMSIZEx, BEAMSIZEy, 20)))
-            if SoundMute == "off":
-                if accesory_type == 2:
-                    Pew_D.play()
-                else:
+                if SoundMute == "off":
                     Pew.play()
 
         if B_BEAM_CHARGE >= 1:
@@ -1632,7 +1652,9 @@ while everyOn:
         shieldtextSurface = shieldfont.render(("Shield: " +(str(SHIELD))), True, WHITE)
         scoretextSurface = scorefont.render(("Score: " +(str(int(SCORE)))), True, WHITE)
         livestextSurface = livesfont.render(("Lives: " +(str(HEALTH))), True, BLACK)
-    
+        fps = pu_countfont.render(str(int(clock.get_fps()))+ ' FPS', True, pygame.Color('white'))
+        screen.blit(fps, (10,8))
+        
     # Refresh Screen
     pygame.display.flip()
 
