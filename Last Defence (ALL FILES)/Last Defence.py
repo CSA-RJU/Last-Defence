@@ -1653,7 +1653,7 @@ while everyOn:
         scoretextSurface = scorefont.render(("Score: " +(str(int(SCORE)))), True, WHITE)
         livestextSurface = livesfont.render(("Lives: " +(str(HEALTH))), True, BLACK)
         fps = pu_countfont.render(str(int(clock.get_fps()))+ ' FPS', True, pygame.Color('white'))
-        screen.blit(fps, (10,8))
+        screen.blit(fps, (93, 538))
         
     # Refresh Screen
     pygame.display.flip()
